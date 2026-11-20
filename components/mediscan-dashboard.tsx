@@ -2,9 +2,9 @@
 
 import { useRef, useState } from "react"
 import {
-  Activity, ArrowDownRight, ArrowRight, ArrowUpRight, Bell, Brain, ChevronDown,
+  Activity, ArrowDownRight, ArrowRight, Bell, Brain, ChevronDown,
   CircleHelp, Clock3, FileImage, HeartPulse, LayoutDashboard, LockKeyhole,
-  Menu, MoreHorizontal, Plus, Search, ShieldCheck, Stethoscope, Upload, X,
+  Menu, Moon, MoreHorizontal, Plus, ShieldCheck, Stethoscope, Sun, Upload, X,
 } from "lucide-react"
 
 type ModuleKey = "overview" | "brain" | "chest" | "retina" | "history"
@@ -26,6 +26,7 @@ const navItems: { id: ModuleKey; label: string; icon: typeof LayoutDashboard }[]
 export function MediscanDashboard() {
   const [active, setActive] = useState<ModuleKey>("overview")
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [darkTheme, setDarkTheme] = useState(false)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [notice, setNotice] = useState("")
   const inputRef = useRef<HTMLInputElement>(null)
@@ -46,7 +47,7 @@ export function MediscanDashboard() {
   }
 
   return (
-    <div className="app-shell">
+    <div className={`app-shell ${darkTheme ? "theme-dark" : "theme-light"}`}>
       <aside className={`sidebar ${mobileNavOpen ? "sidebar-open" : ""}`}>
         <div className="brand-row">
           <div className="brand-mark"><Activity aria-hidden="true" /></div>
@@ -83,7 +84,7 @@ export function MediscanDashboard() {
         <header className="topbar">
           <button className="icon-button mobile-menu" aria-label="Open navigation" onClick={() => setMobileNavOpen(true)}><Menu /></button>
           <div className="breadcrumbs"><span>Workspace</span><span className="crumb-slash">/</span><strong>{navItems.find((item) => item.id === active)?.label}</strong></div>
-          <div className="top-actions"><span className="environment-pill"><span /> Prototype environment</span><button className="icon-button notification-button" aria-label="Notifications"><Bell /></button><span className="avatar avatar-small">RS</span></div>
+          <div className="top-actions"><span className="environment-pill"><span /> Prototype environment</span><button className="icon-button theme-toggle" type="button" aria-label={`Switch to ${darkTheme ? "light" : "dark"} theme`} aria-pressed={darkTheme} onClick={() => setDarkTheme((current) => !current)}>{darkTheme ? <Sun aria-hidden="true" /> : <Moon aria-hidden="true" />}</button><button className="icon-button notification-button" aria-label="Notifications"><Bell /></button><span className="avatar avatar-small">RS</span></div>
         </header>
 
         <div className="content-wrap">
@@ -91,7 +92,7 @@ export function MediscanDashboard() {
 
           {active === "overview" ? (
             <>
-              <section className="welcome-row"><div><p className="eyebrow">MONDAY, NOVEMBER 23, 2026</p><h1>Research overview</h1><p className="page-subtitle">A clear view of your medical imaging research workspace.</p></div><button className="primary-button" onClick={() => { setActive("brain"); setSelectedFile(null); setNotice("") }}><Plus aria-hidden="true" /> New analysis <ChevronDown className="button-chevron" aria-hidden="true" /></button></section>
+              <section className="welcome-row"><div><p className="eyebrow">MEDICAL IMAGING RESEARCH</p><h1>Research overview</h1><p className="page-subtitle">A clear view of your medical imaging research workspace.</p></div><button className="primary-button" onClick={() => { setActive("brain"); setSelectedFile(null); setNotice("") }}><Plus aria-hidden="true" /> New analysis <ChevronDown className="button-chevron" aria-hidden="true" /></button></section>
 
               <section className="stats-grid" aria-label="Workspace summary">
                 <article className="stat-card"><div className="stat-top"><span>Analysis sessions</span><span className="stat-icon sky"><FileImage /></span></div><div className="stat-value">0</div><div className="stat-note">No sessions in this prototype</div></article>
